@@ -1,36 +1,32 @@
+document.getElementById("age-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent form from submitting normally
 
-const ageForm = document.getElementById("age-form");
-const ageInput = document.getElementById("age");
-const nameInput = document.getElementById("name");
+    const age = document.getElementById("age").value;
+    const name = document.getElementById("name").value;
 
-ageForm.addEventListener("submit", function(event) {
-    event.preventDefault();
-	
-    const age = parseInt(ageInput.value, 10);
-    const name = nameInput.value.trim();
-
+    // Check if inputs are empty
     if (!age || !name) {
-        alert("Please fill in all fields.");
+        alert("Please fill out both fields.");
         return;
     }
 
-   validateAge(name, age)
-        .then((message) => {
-            alert(message);
-        })
-        .catch((message) => {
-            alert(message);
-        });
-});
-
-function validateAge(name, age) {
-    return new Promise((resolve, reject) => {
+    // Create the promise for age validation
+    const ageValidationPromise = new Promise((resolve, reject) => {
         setTimeout(() => {
             if (age >= 18) {
-                resolve(`Welcome, ${name}. You can vote.`);
+                resolve(name);
             } else {
-                reject(`Oh sorry, ${name}. You aren't old enough.`);
+                reject(name);
             }
-        }, 4000); 
+        }, 4000); // Wait for 4 seconds
     });
-}
+
+    // Handle promise resolution and rejection
+    ageValidationPromise
+        .then((resolvedName) => {
+            alert(`Welcome, ${resolvedName}. You can vote.`);
+        })
+        .catch((rejectedName) => {
+            alert(`Oh sorry ${rejectedName}. You aren't old enough.`);
+        });
+});
